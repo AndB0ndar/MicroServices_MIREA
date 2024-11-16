@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: pgadmin
+      POSTGRES_PASSWORD: pgadmin_pass
+      POSTGRES_DB: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  goods_service:
+    build:
+      context: ./goods_service
+      dockerfile: Dockerfile
+    container_name: goods_service
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  orders_service:
+    build: 
+      context: ./orders_service
+      dockerfile: Dockerfile
+    container_name: orders_service
+    ports:
+      - "8001:8000"
+
+volumes:
+  db_data:
+
